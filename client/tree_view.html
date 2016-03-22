@@ -1,0 +1,26 @@
+<Template name="TreeView">
+    {{> TreeView_show showArgs}}
+</Template>
+
+<Template name="TreeView_show">
+  {{#unless errorMessage}}
+    {{#if subscriptionsReady}}
+      {{> TreeView_content options}}
+    {{else}}
+      <div class="treeview-loading">
+        Loading…
+      </div>
+    {{/if}}
+  {{else}}
+    {{> TreeView_error message=errorMessage}}
+  {{/unless}}
+</Template>
+
+<Template name="TreeView_content">
+  <div class="treeview-content js-treeview-content">
+  </div>
+</Template>
+
+<Template name="TreeView_error">
+  <div class="treeview-error">{{message}}</div>
+</Template>
