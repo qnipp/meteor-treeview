@@ -4,7 +4,7 @@
 
 <Template name="TreeView_show">
   {{#unless errorMessage}}
-    {{#if subscriptionsReady}}
+    {{#if ready}}
       {{> TreeView_content options}}
     {{else}}
       <div class="treeview-loading">
