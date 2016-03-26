@@ -45,7 +45,7 @@ See the [demo](https://github.com/qnipp/meteor-treeview-demo) to see different c
 - **collection** sets the collection to be used.
 - **subscription** sets the subscription for the template.
 - **getNodes** is a `function(parent)`, which returns the nodes for a given parent as cursor or array.
-- **mapping** contains a mapping from the fields from the data source to the tree fields. If a string is set, this field is taken from the orginal data. If a function is given, the function is called with the signature `function(item, field)`. `item` is the row in the database.
+- **mapping** contains a mapping from the fields from the data source to the tree fields. If a string is set, this field is taken from the orginal data. If a function is given, the function is called with the signature `function(item)`. `item` is the row in the database.
  - **parent**: The field containing the id of the parent node.
  - **text**: The text to be used at the nodes.
  - **icon**: The icon to be used for this node.
