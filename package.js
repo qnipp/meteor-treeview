@@ -14,7 +14,7 @@ Package.onUse(function(api) {
   api.versionsFrom('1.2.1');
   api.use(['ecmascript']);
   api.use(['blaze', 'templating', 'jquery', 'reactive-dict'], 'client');
-  api.use(['qnipp:jstree'], 'client');
+  api.use(['qnipp:jstree@3.3.0'], 'client');
   api.addFiles('client/tree_view.html', 'client');
   api.addFiles('client/tree_view.js', 'client');
 
