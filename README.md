@@ -59,7 +59,7 @@ See the demo to see different configurations in action.
 ### Tree configuration
 
 - **parent** shows only nodes below this parent. If not set, the parent node is identified by parent `null`.
-- **select** selects a node on rendering the tree.
+- **select** selects a node, when the tree is rendered. It takes core to open the parent nodes.
 - **jstree** can be used to set the jsTree configuration options.
  - **plugins** activates one or more of the available plugins.
 
@@ -78,7 +78,11 @@ The function signature is `function(e, item, data)`.
 
 - **e** is the original event.
 - **item** contains the id of the respective item, or a list of ids in the case of the **changed** event. The root node has the id *#*.
-- **data** is an array with additional data, dependent on the event:
+- **data** is an array with additional data, dependent of the event:
  - **text** contains the new name of a renamed node.
  - **parent** contains the parent for a new or copied or moved node.
  - **position** contains the position of a copied or moved node.
+
+## License
+
+MIT
