@@ -1,5 +1,5 @@
 Package.describe({
-  name: 'qnipp:jstree-blaze-template',
+  name: 'qnipp:treeview',
   version: '0.0.1',
   // Brief, one-line summary of the package.
   summary: 'Show and edit data from a collection using jsTree',
@@ -21,8 +21,4 @@ Package.onUse(function(api) {
 });
 
 Package.onTest(function(api) {
-  api.use('ecmascript');
-  api.use('tinytest');
-  api.use('fknipp:jstree-blaze-template');
-  api.addFiles('jstree-blaze-template-tests.js');
 });
