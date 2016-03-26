@@ -4,7 +4,7 @@ This is a Blaze template to be used to display a tree (using jsTree) right from 
 
 ## Demo
 
-See the [https://github.com/qnipp/meteor-treeview-demo](demo) and its [https://github.com/qnipp/meteor-treeview-demo](source).
+See the [demo](https://github.com/qnipp/meteor-treeview-demo) and its [source](https://github.com/qnipp/meteor-treeview-demo).
 
 ## Usage
 
@@ -38,7 +38,7 @@ Template.templatename.helpers({
 
 ## Configuration options
 
-See the [https://github.com/qnipp/meteor-treeview-demo](demo) to see different configurations in action.
+See the [demo](https://github.com/qnipp/meteor-treeview-demo) to see different configurations in action.
 
 ### Data source
 
