@@ -121,10 +121,12 @@ Template.TreeView_content.onRendered(function() {
       let state = {
         selected: (item._id == dataContext.select)
       }
-      if (parents.indexOf(item._id) > -1) {
+      if (dataContext.openAll || parents.indexOf(item._id) > -1) {
         state.opened = true;
       }
       return state;
+    } else if (dataContext.openAll) {
+      return { opened: true };
     }
   }
 

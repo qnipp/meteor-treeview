@@ -60,6 +60,7 @@ See the [demo](http://treeview.meteor.qnipp.com) to see different configurations
 
 - **parent** shows only nodes below this parent. If not set, the parent node is identified by parent `null`.
 - **select** selects a node, when the tree is rendered. It takes core to open the parent nodes.
+- **openAll** opens all nodes on loading, if set to `true`.
 - **jstree** can be used to set the jsTree configuration options.
  - **plugins** activates one or more of the available plugins.
 
@@ -86,3 +87,7 @@ The function signature is `function(e, item, data)`.
 ## License
 
 MIT
+
+## Changelog
+
+- 0.0.2: Added option to open all nodes on loading.
