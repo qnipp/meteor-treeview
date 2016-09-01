@@ -72,6 +72,12 @@ Template.TreeView_content.onRendered(function() {
 
   let openId = null;
   let editId = null;
+  
+  function getItemId (item) {
+      // Handle Mongos ObjectID instances
+      if (item._id.valueOf) return item._id.valueOf(); 
+      return item._id;
+  }
 
   function getNodes(parent) {
 
@@ -83,7 +89,7 @@ Template.TreeView_content.onRendered(function() {
 
     return f(parent).map( (item) => {
       node = {
-        id: item._id,
+        id: getItemId(item),
         text: getContent(item, 'text'),
         icon: getContent(item, 'icon'),
         // TODO: set state to show a selected node
@@ -93,7 +99,7 @@ Template.TreeView_content.onRendered(function() {
         data: item
       };
 
-      node.children = f(item._id).count() > 0;
+      node.children = f(getItemId(item)).count() > 0;
       return node;
     });
   }
@@ -119,9 +125,9 @@ Template.TreeView_content.onRendered(function() {
 
     if (dataContext.select) {
       let state = {
-        selected: (item._id == dataContext.select)
+        selected: (getItemId(item) == dataContext.select)
       }
-      if (dataContext.openAll || parents.indexOf(item._id) > -1) {
+      if (dataContext.openAll || parents.indexOf(getItemId(item)) > -1) {
         state.opened = true;
       }
       return state;
