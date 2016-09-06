@@ -26,7 +26,7 @@ Template.TreeView.onCreated(function() {
           instance.state.set('ready', instance.subscriptionsReady());
         });
       }
-    } else if(! data.Context || ! dataContext.core || ! dataContext.core.data) {
+    } else if(! dataContext || ! dataContext.core || ! dataContext.core.data) {
       this.state.set('errorMessage', 'No collection set.');
     }
   });
