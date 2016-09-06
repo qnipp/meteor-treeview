@@ -104,6 +104,8 @@ Template.TreeView_content.onRendered(function() {
         data: item
       };
       
+      // MMA: Allow node postprocessing for adding other plugins like "type"
+      if (typeof dataContext.processNode == 'function') { dataContext.processNode(node, item); } 
 
       node.children = getCount(f(getItemId(item))) > 0;
       return node;
