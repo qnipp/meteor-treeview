@@ -78,6 +78,11 @@ Template.TreeView_content.onRendered(function() {
       if (item._id.valueOf) return item._id.valueOf(); 
       return item._id;
   }
+  
+  function getCount(listOrCursor) {
+      if (typeof(listOrCursor.count) === 'function') return listOrCursor.count(); 
+      return listOrCursor.length; 
+  }
 
   function getNodes(parent) {
 
@@ -98,8 +103,9 @@ Template.TreeView_content.onRendered(function() {
         a_attr: getContent(item, 'aAttr'),
         data: item
       };
+      
 
-      node.children = f(getItemId(item)).count() > 0;
+      node.children = getCount(f(getItemId(item))) > 0;
       return node;
     });
   }
