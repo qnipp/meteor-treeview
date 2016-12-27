@@ -88,10 +88,18 @@ The function signature is `function(e, item, data)`.
  - **item_data** contains the element data of the current node.
  - **parent_data** contains the element data of the parent node.
 
+## Contributors ##
+
+- Franz Knipp (@fknipp)
+- Mathias Mamsch (@domoran)
+- Diego Nieto Cid (@diegonc)
+
 ## License
 
 MIT
 
 ## Changelog
 
+- 1.0.0: Added option to select all nodes on loading.
+- 0.9.0: Integrated feature to process nodes by @domoran.
 - 0.0.2: Added option to open all nodes on loading.
