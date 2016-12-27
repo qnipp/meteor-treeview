@@ -72,16 +72,16 @@ Template.TreeView_content.onRendered(function() {
 
   let openId = null;
   let editId = null;
-  
+
   function getItemId (item) {
       // Handle Mongos ObjectID instances
-      if (item._id.valueOf) return item._id.valueOf(); 
+      if (item._id.valueOf) return item._id.valueOf();
       return item._id;
   }
-  
+
   function getCount(listOrCursor) {
-      if (typeof(listOrCursor.count) === 'function') return listOrCursor.count(); 
-      return listOrCursor.length; 
+      if (typeof(listOrCursor.count) === 'function') return listOrCursor.count();
+      return listOrCursor.length;
   }
 
   function getNodes(parent) {
@@ -103,9 +103,9 @@ Template.TreeView_content.onRendered(function() {
         a_attr: getContent(item, 'aAttr'),
         data: item
       };
-      
+
       // MMA: Allow node postprocessing for adding other plugins like "type"
-      if (typeof dataContext.processNode == 'function') { dataContext.processNode(node, item); } 
+      if (typeof dataContext.processNode == 'function') { dataContext.processNode(node, item); }
 
       node.children = getCount(f(getItemId(item))) > 0;
       return node;
@@ -131,7 +131,9 @@ Template.TreeView_content.onRendered(function() {
     let content = getContent(item, 'state');
     if (content) return content;
 
-    if (dataContext.select) {
+    if (dataContext.selectAll) {
+      return { selected: true, opened: true };
+    } else if (dataContext.select) {
       let state = {
         selected: (getItemId(item) == dataContext.select)
       }
@@ -216,18 +218,18 @@ Template.TreeView_content.onRendered(function() {
               tree.jstree().open_node(data.parent);
             }
             let nodeId     = data.selected || (data.original && data.original.id) || data.node.id;
-            
+
             let parentNode = data.node && tree.jstree().get_node(data.parent);
             let itemNode   = data.node && tree.jstree().get_node(nodeId);
-            
+
             let newId = f(e, nodeId,
-                          {text: data.text, 
-                            parent: data.parent, 
-                            position: data.position, 
-                            item_data: (itemNode && itemNode.data) || {}, 
-                            parent_data: (parentNode && parentNode.data) || {} 
+                          {text: data.text,
+                            parent: data.parent,
+                            position: data.position,
+                            item_data: (itemNode && itemNode.data) || {},
+                            parent_data: (parentNode && parentNode.data) || {}
                            });
-            
+
             if (newId === false) {
               ////console.log("Refreshing because of false as return value.")
               tree.jstree().refresh();

@@ -44,7 +44,7 @@ See the [demo](http://treeview.meteor.qnipp.com) to see different configurations
 
 - **collection** sets the collection to be used.
 - **subscription** sets the subscription for the template.
-- **processNode** is a `function(node, item)` that allows to modify the tree nodes (node parameter) for jsTree, e.g. for adding properties to it for a certain plugin. The database item is passed as item. 
+- **processNode** is a `function(node, item)` that allows to modify the tree nodes (node parameter) for jsTree, e.g. for adding properties to it for a certain plugin. The database item is passed as item.
 - **getNodes** is a `function(parent)`, which returns the nodes for a given parent as cursor or array.
 - **mapping** contains a mapping from the fields from the data source to the tree fields. If a string is set, this field is taken from the orginal data. If a function is given, the function is called with the signature `function(item)`. `item` is the row in the database.
  - **parent**: The field containing the id of the parent node.
@@ -61,6 +61,7 @@ See the [demo](http://treeview.meteor.qnipp.com) to see different configurations
 
 - **parent** shows only nodes below this parent. If not set, the parent node is identified by parent `null`.
 - **select** selects a node, when the tree is rendered. It takes core to open the parent nodes.
+- **selectAll** selects all nodes on loading, if set to `true`.
 - **openAll** opens all nodes on loading, if set to `true`.
 - **jstree** can be used to set the jsTree configuration options.
  - **plugins** activates one or more of the available plugins.
