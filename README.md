@@ -44,7 +44,7 @@ See the [demo](http://treeview.meteor.qnipp.com) to see different configurations
 
 - **collection** sets the collection to be used.
 - **subscription** sets the subscription for the template.
-- **processNode** a function(node,item) that allows to modify the tree nodes (node parameter) for jsTree, e.g. for adding properties to it for a certain plugin. The database item is passed as item. 
+- **processNode** is a `function(node, item)` that allows to modify the tree nodes (node parameter) for jsTree, e.g. for adding properties to it for a certain plugin. The database item is passed as item. 
 - **getNodes** is a `function(parent)`, which returns the nodes for a given parent as cursor or array.
 - **mapping** contains a mapping from the fields from the data source to the tree fields. If a string is set, this field is taken from the orginal data. If a function is given, the function is called with the signature `function(item)`. `item` is the row in the database.
  - **parent**: The field containing the id of the parent node.
@@ -80,10 +80,12 @@ The function signature is `function(e, item, data)`.
 
 - **e** is the original event.
 - **item** contains the id of the respective item, or a list of ids in the case of the **changed** event. The root node has the id *#*.
-- **data** is an array with additional data, dependent of the event:
- - **text** contains the new name of a renamed node.
- - **parent** contains the parent for a new or copied or moved node.
- - **position** contains the position of a copied or moved node.
+- **data** is an array to provide additional information about the event:
+ - **text** contains the new name of a renamed node (set for **create**, **rename**).
+ - **parent** contains the parent for a new or copied or moved node (set for **create**, **delete**, **copy**, **move**).
+ - **position** contains the position of a copied or moved node (set for **create**, **copy**, **move**).
+ - **item_data** contains the element data of the current node.
+ - **parent_data** contains the element data of the parent node.
 
 ## License
 
