@@ -90,9 +90,9 @@ The function signature is `function(e, item, data)`.
 
 ## Contributors ##
 
-- Franz Knipp (@fknipp)
-- Mathias Mamsch (@domoran)
-- Diego Nieto Cid (@diegonc)
+- Franz Knipp [@fknipp](https://github.com/fknipp)
+- Mathias Mamsch [@domoran](https://github.com/domoran)
+- Diego Nieto Cid [@diegonc](https://github.com/diegonc)
 
 ## License
 
