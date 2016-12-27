@@ -78,6 +78,11 @@ Template.TreeView_content.onRendered(function() {
       if (item._id.valueOf) return item._id.valueOf(); 
       return item._id;
   }
+  
+  function getCount(listOrCursor) {
+      if (typeof(listOrCursor.count) === 'function') return listOrCursor.count(); 
+      return listOrCursor.length; 
+  }
 
   function getNodes(parent) {
 
@@ -98,8 +103,11 @@ Template.TreeView_content.onRendered(function() {
         a_attr: getContent(item, 'aAttr'),
         data: item
       };
+      
+      // MMA: Allow node postprocessing for adding other plugins like "type"
+      if (typeof dataContext.processNode == 'function') { dataContext.processNode(node, item); } 
 
-      node.children = f(getItemId(item)).count() > 0;
+      node.children = getCount(f(getItemId(item))) > 0;
       return node;
     });
   }
@@ -150,7 +158,6 @@ Template.TreeView_content.onRendered(function() {
 
   instance.autorun((computation) => {
     if (computation.firstRun) {
-
       // Create tree on first run
 
       let jsTreeOptions = dataContext.jstree || {};
@@ -208,8 +215,19 @@ Template.TreeView_content.onRendered(function() {
             if (eventname === 'create_node.jstree') {
               tree.jstree().open_node(data.parent);
             }
-            let newId = f(e, data.selected || (data.original && data.original.id) || data.node.id,
-                          {text: data.text, parent: data.parent, position: data.position});
+            let nodeId     = data.selected || (data.original && data.original.id) || data.node.id;
+            
+            let parentNode = data.node && tree.jstree().get_node(data.parent);
+            let itemNode   = data.node && tree.jstree().get_node(nodeId);
+            
+            let newId = f(e, nodeId,
+                          {text: data.text, 
+                            parent: data.parent, 
+                            position: data.position, 
+                            item_data: (itemNode && itemNode.data) || {}, 
+                            parent_data: (parentNode && parentNode.data) || {} 
+                           });
+            
             if (newId === false) {
               ////console.log("Refreshing because of false as return value.")
               tree.jstree().refresh();
@@ -232,8 +250,6 @@ Template.TreeView_content.onRendered(function() {
       attachEventHandler("move_node.jstree", events.move);
 
     } else {
-      //console.log("refresh");
-
       let tree = this.$('.js-treeview-content').jstree();
       tree.refresh();
       if (editId) {
