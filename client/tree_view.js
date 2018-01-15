@@ -15,13 +15,23 @@ Template.TreeView.onCreated(function() {
     if (dataContext && dataContext.collection) {
       if (dataContext.subscription) {
         //console.log('Calling subscribe');
-        instance.subscribe(dataContext.subscription, {
-          onReady: () => {
-            //console.log("onReady called");
-            //console.debug(this);
-            instance.state.set('ready', true);
-          }
-        });
+        if(dataContext.selector) {
+          instance.subscribe(dataContext.subscription, dataContext.selector, {
+            onReady: () => {
+              //console.log("onReady called");
+              //console.debug(this);
+              instance.state.set('ready', true);
+            }
+          })
+        } else {
+          instance.subscribe(dataContext.subscription, {
+            onReady: () => {
+              //console.log("onReady called");
+              //console.debug(this);
+              instance.state.set('ready', true);
+            }
+          });
+        }
         Tracker.afterFlush(function() {
           instance.state.set('ready', instance.subscriptionsReady());
         });
