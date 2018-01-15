@@ -1,4 +1,4 @@
-Template.TreeView.onCreated(function() {
+Template.TreeView.onCreated(function () {
   let instance = this;
 
   instance.state = new ReactiveDict();
@@ -9,36 +9,41 @@ Template.TreeView.onCreated(function() {
 
   instance.autorun(() => {
     instance.state.set('ready', false);
+    console.log('autorun in TreeView');
 
     let dataContext = Template.currentData();
 
-    if (dataContext && dataContext.collection) {
-      if (dataContext.subscription) {
-        //console.log('Calling subscribe');
-        if(dataContext.selector) {
-          instance.subscribe(dataContext.subscription, dataContext.selector, {
-            onReady: () => {
-              //console.log("onReady called");
-              //console.debug(this);
-              instance.state.set('ready', true);
-            }
-          })
-        } else {
-          instance.subscribe(dataContext.subscription, {
-            onReady: () => {
-              //console.log("onReady called");
-              //console.debug(this);
-              instance.state.set('ready', true);
-            }
+    Tracker.afterFlush(function () {
+      if (dataContext && dataContext.collection) {
+        if (dataContext.subscription) {
+          // console.log('Calling subscribe');
+          if (dataContext.selector) {
+            instance.subscribe(dataContext.subscription, dataContext.selector, {
+              onReady: () => {
+                //console.log("onReady called");
+                //console.debug(this);
+                instance.state.set('ready', true);
+              }
+            })
+          } else {
+            instance.subscribe(dataContext.subscription, {
+              onReady: () => {
+                //console.log("onReady called");
+                //console.debug(this);
+                instance.state.set('ready', true);
+              }
+            });
+          }
+          Tracker.afterFlush(function () {
+            instance.state.set('ready', instance.subscriptionsReady());
           });
         }
-        Tracker.afterFlush(function() {
-          instance.state.set('ready', instance.subscriptionsReady());
-        });
+      } else if (!dataContext || !dataContext.core || !dataContext.core.data) {
+        this.state.set('errorMessage', 'No collection set.');
       }
-    } else if(! dataContext || ! dataContext.core || ! dataContext.core.data) {
-      this.state.set('errorMessage', 'No collection set.');
-    }
+
+    });
+
   });
 
 });
@@ -54,10 +59,11 @@ Template.TreeView.helpers({
   }
 });
 
-Template.TreeView_content.onRendered(function() {
+Template.TreeView_content.onRendered(function () {
+  console.log('Template.TreeView_content.onRendered');
   let dataContext = Template.currentData();
   let collection = dataContext.collection;
-  let mapping = dataContext.mapping || {};
+  let mapping = dataContext.mapping || {};
   let events = dataContext.events || {};
   let instance = this;
   let select = dataContext.select;
@@ -72,9 +78,9 @@ Template.TreeView_content.onRendered(function() {
 
     do {
       let item = collection.findOne(id);
-      if (! item) break;
+      if (!item) break;
       id = item.parent;
-      if(id) parents.push(id);
+      if (id) parents.push(id);
     } while (id);
 
     return parents;
@@ -83,33 +89,33 @@ Template.TreeView_content.onRendered(function() {
   let openId = null;
   let editId = null;
 
-  function getItemId (item) {
-      // Handle Mongos ObjectID instances
-      if (item._id.valueOf) return item._id.valueOf();
-      return item._id;
+  function getItemId(item) {
+    // Handle Mongos ObjectID instances
+    if (item._id.valueOf) return item._id.valueOf();
+    return item._id;
   }
 
   function getCount(listOrCursor) {
-      if (typeof(listOrCursor.count) === 'function') return listOrCursor.count();
-      return listOrCursor.length;
+    if (typeof (listOrCursor.count) === 'function') return listOrCursor.count();
+    return listOrCursor.length;
   }
 
   function getNodes(parent) {
 
-    let f = dataContext.getNodes || function(parent) {
+    let f = dataContext.getNodes || function (parent) {
       let search = {};
       search[mapping['parent'] || 'parent'] = parent;
       return collection.find(search);
     }
 
-    return f(parent).map( (item) => {
+    return f(parent).map((item) => {
       node = {
         id: getItemId(item),
         text: getContent(item, 'text'),
         icon: getContent(item, 'icon'),
         // TODO: set state to show a selected node
         state: getState(item),
-        li_attr: {class: getContent(item, 'liClass')},
+        li_attr: { class: getContent(item, 'liClass') },
         a_attr: getContent(item, 'aAttr'),
         data: item
       };
@@ -142,12 +148,12 @@ Template.TreeView_content.onRendered(function() {
     if (content) return content;
 
     if (dataContext.selectAll) {
-      return { selected: true, opened: true };
+      return { selected: true, opened: true };
     } else if (dataContext.select) {
       let state = {
         selected: (getItemId(item) == dataContext.select)
       }
-      if (dataContext.openAll || parents.indexOf(getItemId(item)) > -1) {
+      if (dataContext.openAll || parents.indexOf(getItemId(item)) > -1) {
         state.opened = true;
       }
       return state;
@@ -160,12 +166,12 @@ Template.TreeView_content.onRendered(function() {
   function useComputation(c, f) {
     let savedComputation = Tracker.currentComputation;
     Tracker.currentComputation = c;
-    Tracker.active = !! c;
+    Tracker.active = !!c;
 
     f();
 
     Tracker.currentComputation = savedComputation;
-    Tracker.active = !! savedComputation;
+    Tracker.active = !!savedComputation;
   }
 
   instance.autorun((computation) => {
@@ -176,14 +182,14 @@ Template.TreeView_content.onRendered(function() {
 
       jsTreeOptions.core = jsTreeOptions.core || {};
       jsTreeOptions.core.data = jsTreeOptions.core.data ||
-        function(node, callback) {
+        function (node, callback) {
 
           // The computation is reused to trigger only one refresh of the
           // complete tree.
 
-          useComputation(computation, function() {
+          useComputation(computation, function () {
             if (node.id === '#') {
-              callback(getNodes(dataContext.parent || null));
+              callback(getNodes(dataContext.parent || null));
             } else {
               callback(getNodes(node.id));
             }
@@ -192,29 +198,29 @@ Template.TreeView_content.onRendered(function() {
 
       jsTreeOptions.core.check_callback =
         jsTreeOptions.core.check_callback ||
-        !! events.create ||
-        !! events.rename ||
-        !! events.delete ||
-        !! events.copy ||
-        !! events.move;
+        !!events.create ||
+        !!events.rename ||
+        !!events.delete ||
+        !!events.copy ||
+        !!events.move;
 
       jsTreeOptions.contextmenu = jsTreeOptions.contextmenu || {};
       jsTreeOptions.contextmenu.items = jsTreeOptions.contextmenu.items ||
-        function() {
+        function () {
           let items = $.jstree.defaults.contextmenu.items();
-          if (! events.create) delete items.create;
-          if (! events.rename) delete items.rename;
-          if (! events.delete) delete items.remove;
-          if (! events.copy) delete items.ccp.submenu.copy;
-          if (! events.move) delete items.ccp.submenu.move;
-          if (! events.copy && ! events.move) delete items.ccp;
+          if (!events.create) delete items.create;
+          if (!events.rename) delete items.rename;
+          if (!events.delete) delete items.remove;
+          if (!events.copy) delete items.ccp.submenu.copy;
+          if (!events.move) delete items.ccp.submenu.move;
+          if (!events.copy && !events.move) delete items.ccp;
 
           return items;
         }();
 
       jsTreeOptions.dnd = jsTreeOptions.dnd || {};
-      jsTreeOptions.dnd.always_copy = !! events.copy && ! events.move;
-      jsTreeOptions.dnd.copy = !! events.copy;
+      jsTreeOptions.dnd.always_copy = !!events.copy && !events.move;
+      jsTreeOptions.dnd.copy = !!events.copy;
 
 
       let tree = this.$('.js-treeview-content').jstree(jsTreeOptions);
@@ -222,23 +228,24 @@ Template.TreeView_content.onRendered(function() {
       // Attach events
       function attachEventHandler(eventname, f) {
         if (typeof f == 'function') {
-          tree.on(eventname, function(e, data) {
+          tree.on(eventname, function (e, data) {
             //console.log(data);
             if (eventname === 'create_node.jstree') {
               tree.jstree().open_node(data.parent);
             }
-            let nodeId     = data.selected || (data.original && data.original.id) || data.node.id;
+            let nodeId = data.selected || (data.original && data.original.id) || data.node.id;
 
             let parentNode = data.node && tree.jstree().get_node(data.parent);
-            let itemNode   = data.node && tree.jstree().get_node(nodeId);
+            let itemNode = data.node && tree.jstree().get_node(nodeId);
 
             let newId = f(e, nodeId,
-                          {text: data.text,
-                            parent: data.parent,
-                            position: data.position,
-                            item_data: (itemNode && itemNode.data) || {},
-                            parent_data: (parentNode && parentNode.data) || {}
-                           });
+              {
+                text: data.text,
+                parent: data.parent,
+                position: data.position,
+                item_data: (itemNode && itemNode.data) || {},
+                parent_data: (parentNode && parentNode.data) || {}
+              });
 
             if (newId === false) {
               ////console.log("Refreshing because of false as return value.")
@@ -266,7 +273,7 @@ Template.TreeView_content.onRendered(function() {
       tree.refresh();
       if (editId) {
         //console.log('Calling edit on ' + editId);
-        Meteor.setTimeout(function() {
+        Meteor.setTimeout(function () {
           tree.edit(editId);
           editId = null;
         }, 1000);
