@@ -2,8 +2,7 @@ Package.describe({
     name: 'sebl29:treeview',
     version: '1.2.0',
     summary: 'Show and edit data from a collection using jsTree',
-    // TODO add git url
-    git: '',
+    git: 'https://github.com/Sebl29/meteor-treeview',
     documentation: 'README.md'
 });
 
