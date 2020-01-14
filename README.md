@@ -10,7 +10,7 @@ See the [demo](http://treeview.meteor.qnipp.com) and its [source](https://github
 
 ### Installation
 
-    meteor add qnipp:treeview
+    meteor add sebl29:treeview
 
 ### Mount the tree in your Blaze template
 
@@ -94,6 +94,7 @@ The function signature is `function(e, item, data)`.
 - Franz Knipp [@fknipp](https://github.com/fknipp)
 - Mathias Mamsch [@domoran](https://github.com/domoran)
 - Diego Nieto Cid [@diegonc](https://github.com/diegonc)
+- Sebastian Schefczyk [@sebl29](https://github.com/sebl29)
 
 ## License
 
@@ -101,6 +102,8 @@ MIT
 
 ## Changelog
 
+
+- 1.2.0: Updated jstree, Meteor apiVersion. Switched to jstree from npm.
 - 1.0.0: Added option to select all nodes on loading.
 - 0.9.0: Integrated feature to process nodes by @domoran.
 - 0.0.2: Added option to open all nodes on loading.

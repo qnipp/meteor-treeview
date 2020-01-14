@@ -1,24 +1,25 @@
 Package.describe({
-  name: 'qnipp:treeview',
-  version: '1.1.1',
-  // Brief, one-line summary of the package.
-  summary: 'Show and edit data from a collection using jsTree',
-  // URL to the Git repository containing the source code for this package.
-  git: '',
-  // By default, Meteor will default to using README.md for documentation.
-  // To avoid submitting documentation, set this field to null.
-  documentation: 'README.md'
+    name: 'sebl29:treeview',
+    version: '1.2.0',
+    summary: 'Show and edit data from a collection using jsTree',
+    git: 'https://github.com/Sebl29/meteor-treeview',
+    documentation: 'README.md'
 });
 
-Package.onUse(function (api) {
-  api.versionsFrom('1.2.1');
-  api.use(['ecmascript']);
-  api.use(['blaze', 'templating', 'jquery', 'reactive-dict'], 'client');
-  api.use(['qnipp:jstree@3.3.0'], 'client');
-  api.addFiles('client/tree_view.html', 'client');
-  api.addFiles('client/tree_view.js', 'client');
-
+Npm.depends({
+    jstree: '3.3.8',
 });
 
-Package.onTest(function (api) {
+Package.onUse((api) => {
+    api.versionsFrom('1.8.3');
+    api.use([
+        'ecmascript'
+    ]);
+    api.use([
+        'blaze',
+        'templating',
+        'reactive-dict',
+        "tmeasday:check-npm-versions@0.3.2",
+    ], 'client');
+    api.mainModule('client/tree_view.js', 'client');
 });
