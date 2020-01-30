@@ -1,6 +1,5 @@
 import $ from "jquery";
 // load "jstree" after jquery
-// eslint-disable-next-line import/no-unresolved
 import "jstree";
 
 import {Meteor} from "meteor/meteor";
