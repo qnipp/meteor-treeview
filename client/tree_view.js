@@ -22,7 +22,7 @@ Template.TreeView.onCreated(function () {
 
     instance.autorun(() => {
         instance.state.set('ready', false);
-        console.log('autorun in TreeView');
+        // console.log('autorun in TreeView');
 
         const dataContext = Template.currentData();
 
@@ -75,9 +75,9 @@ Template.TreeView.helpers({
 
 // eslint-disable-next-line meteor/template-names
 Template.TreeView_content.onRendered(function () {
-    console.log('Template.TreeView_content.onRendered');
     const dataContext = Template.currentData();
     const collection = dataContext.collection;
+    const disableAutoTreeRefresh = dataContext.disableAutoTreeRefresh || false;
     const mapping = dataContext.mapping || {};
     const events = dataContext.events || {};
     const instance = this;
@@ -284,7 +284,9 @@ Template.TreeView_content.onRendered(function () {
 
         } else {
             const tree = $('.js-treeview-content').jstree();
-            tree.refresh();
+            if (!disableAutoTreeRefresh) {
+                tree.refresh();
+            }
             if (editId) {
                 // console.log('Calling edit on ' + editId);
                 Meteor.setTimeout(function () {
